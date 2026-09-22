@@ -1,8 +1,8 @@
 extends Area3D
 
 ## ============================================================
-## PLONPY - NÚCLEO COLECCIONABLE 0.1
-## Reutilizable para Núcleos comunes y raros del Bosque de Vetas.
+## PLONPY - NÚCLEO COLECCIONABLE 0.2
+## Recolección robusta para Núcleos comunes y raros.
 ## ============================================================
 
 @export var nucleus_id: String = ""
@@ -14,7 +14,7 @@ extends Area3D
 @export var rotation_speed: float = 0.9
 @export var bob_height: float = 0.18
 @export var bob_speed: float = 2.2
-
+@export var pickup_distance: float = 1.35
 
 var collected := false
 var base_y := 0.0
@@ -36,9 +36,6 @@ func _ready() -> void:
 	if title.is_empty():
 		title = name.capitalize()
 
-	# ------------------------------------------------------------
-	# COMPROBAR SI YA FUE RECOGIDO
-	# ------------------------------------------------------------
 	if GameManager.has_nucleus(nucleus_id):
 		queue_free()
 		return
@@ -70,7 +67,7 @@ func _ensure_collision() -> void:
 
 	if collision.shape == null:
 		var sphere := SphereShape3D.new()
-		sphere.radius = 0.78
+		sphere.radius = 0.82
 		collision.shape = sphere
 
 
@@ -78,9 +75,6 @@ func _create_visual_fx() -> void:
 	if mesh_visual == null:
 		return
 
-	# ------------------------------------------------------------
-	# MATERIAL DEL NÚCLEO
-	# ------------------------------------------------------------
 	material_energy = StandardMaterial3D.new()
 
 	var rare := rarity.to_lower() == "raro"
@@ -107,9 +101,6 @@ func _create_visual_fx() -> void:
 
 	mesh_visual.material_override = material_energy
 
-	# ------------------------------------------------------------
-	# LUZ DEL NÚCLEO
-	# ------------------------------------------------------------
 	light = OmniLight3D.new()
 	light.name = "LuzNucleo"
 
@@ -142,28 +133,36 @@ func _process(delta: float) -> void:
 
 	elapsed += delta
 
-	# ------------------------------------------------------------
-	# ROTACIÓN
-	# ------------------------------------------------------------
 	rotation.y += rotation_speed * delta
-
-	# ------------------------------------------------------------
-	# MOVIMIENTO FLOTANTE
-	# ------------------------------------------------------------
 	position.y = base_y + sin(elapsed * bob_speed) * bob_height
 
-	# ------------------------------------------------------------
-	# PULSO DE ENERGÍA
-	# ------------------------------------------------------------
 	var pulse := (sin(elapsed * 4.0) + 1.0) * 0.5
 
 	if material_energy != null:
-		material_energy.emission_energy_multiplier = (
-			2.7 + pulse * 2.0
-		)
+		material_energy.emission_energy_multiplier = 2.7 + pulse * 2.0
 
 	if light != null:
 		light.light_energy = 0.8 + pulse * 1.0
+
+
+func _physics_process(_delta: float) -> void:
+	if collected:
+		return
+
+	var jugador := get_tree().current_scene.get_node_or_null("Jugador")
+
+	if jugador == null:
+		return
+
+	if not jugador is CharacterBody3D:
+		return
+
+	# Segunda vía de recolección:
+	# además de body_entered, usamos distancia para evitar que
+	# una diferencia de capas/máscaras de física deje un núcleo
+	# imposible de recoger.
+	if global_position.distance_to(jugador.global_position) <= pickup_distance:
+		_collect(jugador)
 
 
 func _on_body_entered(body: Node3D) -> void:
@@ -176,18 +175,19 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.name != "Jugador":
 		return
 
+	_collect(body)
+
+
+func _collect(_body: Node3D) -> void:
+	if collected:
+		return
+
 	if GameManager.has_nucleus(nucleus_id):
 		return
 
-	# ------------------------------------------------------------
-	# MARCAR COMO RECOGIDO
-	# ------------------------------------------------------------
 	collected = true
 	monitoring = false
 
-	# ------------------------------------------------------------
-	# REGISTRAR EN GAMEMANAGER
-	# ------------------------------------------------------------
 	if not GameManager.register_nucleus(nucleus_id):
 		collected = false
 		monitoring = true
@@ -200,18 +200,12 @@ func _on_body_entered(body: Node3D) -> void:
 		rarity
 	)
 
-	# ------------------------------------------------------------
-	# RECOMPENSAS
-	# ------------------------------------------------------------
 	if reward_xp > 0:
 		ProgressionManager.add_xp(reward_xp)
 
 	if reward_chispa > 0:
 		ProgressionManager.add_chispa(reward_chispa)
 
-	# ------------------------------------------------------------
-	# MENSAJE HUD
-	# ------------------------------------------------------------
 	var hud := get_tree().current_scene.get_node_or_null("HUD")
 
 	if hud != null and hud.has_method("show_message"):
@@ -220,18 +214,10 @@ func _on_body_entered(body: Node3D) -> void:
 			3.5
 		)
 
-	# ------------------------------------------------------------
-	# IMPORTANTE:
-	# NO GUARDAR AUTOMÁTICAMENTE.
-	#
-	# La partida solamente se guarda mediante la tecla G.
-	# ------------------------------------------------------------
+	print("PLONPY: Núcleo recogido correctamente -> ", nucleus_id)
+	print("PLONPY: El guardado en disco se realizará únicamente con G.")
 
-	# ------------------------------------------------------------
-	# EFECTO DE RECOLECCIÓN
-	# ------------------------------------------------------------
 	var tween := create_tween()
-
 	tween.set_parallel(true)
 
 	tween.tween_property(
@@ -258,7 +244,5 @@ func _on_body_entered(body: Node3D) -> void:
 		)
 
 	tween.set_parallel(false)
-
 	tween.tween_interval(0.10)
-
 	tween.tween_callback(queue_free)

@@ -287,9 +287,6 @@ autowrap_mode = 2
 [node name="SalidaBosque" type="Area3D" parent="." unique_id=1730966579]
 transform = Transform3D(0.9935719, -0.11320321, 0, 0.11314098, 0.9930256, -0.03315518, 0.003753273, 0.032942057, 0.9994502, -12, 1, 0)
 script = ExtResource("7_be5db")
-destination_scene = "uid://bti1wxldebt3n"
-destination_region = "bosque_de_vetas"
-destination_spawn_position = Vector3(0, 1.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SalidaBosque" unique_id=1257009401]
 shape = SubResource("BoxShape3D_b6d8j")

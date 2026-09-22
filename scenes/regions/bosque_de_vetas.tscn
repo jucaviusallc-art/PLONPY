@@ -92,14 +92,14 @@ radius = 0.25
 height = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_b6d8j"]
-size = Vector3(24, 1, 24)
+size = Vector3(60, 4, 60)
 
 [node name="BosqueDeVetas" type="Node3D" unique_id=2082478010]
 script = ExtResource("1_bosque")
 
 [node name="SueloBosque" type="CSGBox3D" parent="." unique_id=81707901]
 use_collision = true
-size = Vector3(16, 0.5, 14)
+size = Vector3(60, 0.5, 60)
 material = SubResource("SueloMat_bosque")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1172110482]
@@ -359,6 +359,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="SueloBosque2" type="StaticBody3D" parent="." unique_id=1609087196]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SueloBosque2" unique_id=501982217]
 shape = SubResource("BoxShape3D_b6d8j")

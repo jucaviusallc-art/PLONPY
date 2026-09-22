@@ -1,0 +1,297 @@
+[gd_scene format=3 uid="uid://cyh8tce2ds3so"]
+
+[ext_resource type="Script" uid="uid://400gb5qd4bnl" path="res://scenes/costa_de_chispa.gd" id="1_jte0m"]
+[ext_resource type="Script" uid="uid://x5oe5iwvplbt" path="res://scenes/jugador.gd" id="1_rai72"]
+[ext_resource type="Script" uid="uid://d3012bgjyga13" path="res://scenes/nucleo_zyl_01.gd" id="4_2sxeh"]
+[ext_resource type="Script" uid="uid://wyc05w17qhut" path="res://scripts/exploration/discovery.gd" id="5_discovery"]
+[ext_resource type="Script" uid="uid://c0fkro0lhdr4j" path="res://scripts/ui/hud.gd" id="6_hud"]
+[ext_resource type="Script" uid="uid://p452byr37lwc" path="res://scripts/world/region_transition.gd" id="7_be5db"]
+[ext_resource type="Script" uid="uid://ck2tw37igx6he" path="res://scripts/fx/costa_de_chispa_fx.gd" id="7_fx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rai72"]
+albedo_color = Color(0.22745098, 0.3529412, 0.2509804, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jte0m"]
+sky_top_color = Color(0.08627451, 0.16862746, 0.23921569, 1)
+sky_horizon_color = Color(0.36078432, 0.56078434, 0.6392157, 1)
+sky_curve = 0.35
+ground_bottom_color = Color(0.0627451, 0.13725491, 0.12156863, 1)
+ground_horizon_color = Color(0.23921569, 0.4, 0.34509805, 1)
+sun_angle_max = 44.88
+
+[sub_resource type="Sky" id="Sky_rai72"]
+sky_material = SubResource("ProceduralSkyMaterial_jte0m")
+
+[sub_resource type="Environment" id="Environment_b6d8j"]
+background_mode = 2
+sky = SubResource("Sky_rai72")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7f40w"]
+transparency = 1
+albedo_color = Color(0.078431375, 0.52156866, 0.5882353, 0.64705884)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ema3"]
+albedo_color = Color(0.09411765, 0.7176471, 0.6901961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_be5db"]
+albedo_color = Color(0.3019608, 0.54901963, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_08jef"]
+albedo_color = Color(0.65882355, 0.41960785, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tkdhi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jte0m"]
+albedo_color = Color(0.3882353, 0.8509804, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_b6d8j"]
+material = SubResource("StandardMaterial3D_jte0m")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rai72"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2sxeh"]
+albedo_color = Color(0.49803922, 0.9098039, 1, 1)
+emission_enabled = true
+emission = Color(0.3882353, 0.9098039, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_b6d8j"]
+material = SubResource("StandardMaterial3D_2sxeh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2obi0"]
+albedo_color = Color(0.20784314, 0.95686275, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_roged"]
+material = SubResource("StandardMaterial3D_2obi0")
+top_radius = 0.08
+bottom_radius = 0.35
+height = 0.7
+radial_segments = 6
+rings = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uop8b"]
+albedo_color = Color(0.36862746, 0.9647059, 1, 1)
+emission_enabled = true
+emission = Color(0.36862746, 0.9647059, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7f40w"]
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_discovery"]
+albedo_color = Color(0.25, 0.8, 1, 1)
+emission_enabled = true
+emission = Color(0.15, 0.7, 1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_discovery"]
+material = SubResource("StandardMaterial3D_discovery")
+radius = 0.28
+height = 0.56
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_discovery"]
+radius = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b6d8j"]
+size = Vector3(3, 2, 3)
+
+[node name="CostaDeChispa" type="Node3D" unique_id=1908978863]
+script = ExtResource("1_jte0m")
+
+[node name="SueloCosta" type="CSGBox3D" parent="." unique_id=1949949180]
+transform = Transform3D(0.99199885, 0, 0.12624674, 0, 1, 0, -0.12624674, 0, 0.99199885, -4.0325594, 0, 0)
+use_collision = true
+size = Vector3(16, 0.5, 14)
+material = SubResource("StandardMaterial3D_rai72")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=897539056]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 8, 10)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=143809861]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2113914721]
+environment = SubResource("Environment_b6d8j")
+
+[node name="AguaCosta" type="CSGBox3D" parent="." unique_id=997810458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33, -3)
+size = Vector3(8, 0.15, 5)
+material = SubResource("StandardMaterial3D_7f40w")
+
+[node name="PlantaAlienigena" type="CSGCylinder3D" parent="." unique_id=594113054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.75, -2)
+radius = 0.25
+height = 1.5
+cone = true
+material = SubResource("StandardMaterial3D_4ema3")
+
+[node name="PlantaAlienigena2" type="CSGCylinder3D" parent="." unique_id=1196722826]
+transform = Transform3D(0.7, 0, 0, 0, 1.3, 0, 0, 0, 0.7, 1, 0.75, -1)
+radius = 0.25
+height = 1.5
+cone = true
+material = SubResource("StandardMaterial3D_be5db")
+
+[node name="PlantaAlienigena3" type="CSGCylinder3D" parent="." unique_id=1328600901]
+transform = Transform3D(0.7, 0, 0, 0, 1.3, 0, 0, 0, 0.7, -1, 0.75, -2.5)
+height = 0.8
+cone = true
+material = SubResource("StandardMaterial3D_08jef")
+
+[node name="PlantaAlienigena4" type="CSGCylinder3D" parent="." unique_id=2142574189]
+transform = Transform3D(0.7, 0, 0, 0, 1.3, 0, 0, 0, 0.7, 1.5, 0.75, -2.5)
+height = 0.8
+cone = true
+material = SubResource("StandardMaterial3D_tkdhi")
+
+[node name="Jugador" type="CharacterBody3D" parent="." unique_id=1402476896]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+script = ExtResource("1_rai72")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jugador" unique_id=1843068522]
+mesh = SubResource("CapsuleMesh_b6d8j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jugador" unique_id=257756856]
+shape = SubResource("CapsuleShape3D_rai72")
+
+[node name="Camera3D" type="Camera3D" parent="Jugador" unique_id=2028616293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6)
+current = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Jugador" unique_id=804727446]
+transform = Transform3D(0.255, 0, 0, 0, 0.255, 0, 0, 0, 0.255, 0.3, 0.8, 0.45)
+mesh = SubResource("SphereMesh_b6d8j")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Jugador" unique_id=1059687064]
+transform = Transform3D(0.255, 0, 0, 0, 0.255, 0, 0, 0, 0.255, -0.3, 0.8, 0.45)
+mesh = SubResource("SphereMesh_b6d8j")
+
+[node name="ChispaPrimigenia" type="MeshInstance3D" parent="." unique_id=1864449755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.8, 0.45)
+mesh = SubResource("CylinderMesh_roged")
+surface_material_override/0 = SubResource("StandardMaterial3D_uop8b")
+
+[node name="Area3D" type="Area3D" parent="ChispaPrimigenia" unique_id=1106191408]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ChispaPrimigenia/Area3D" unique_id=171797964]
+shape = SubResource("SphereShape3D_7f40w")
+
+[node name="NucleoZyl01" type="MeshInstance3D" parent="." unique_id=1588087902]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.8, 0.45)
+mesh = SubResource("CylinderMesh_roged")
+surface_material_override/0 = SubResource("StandardMaterial3D_uop8b")
+script = ExtResource("4_2sxeh")
+
+[node name="Area3D" type="Area3D" parent="NucleoZyl01" unique_id=758479414]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoZyl01/Area3D" unique_id=1456742699]
+shape = SubResource("SphereShape3D_7f40w")
+
+[node name="MensajeNucleo" type="Label" parent="." unique_id=294148913]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "✨ La Chispa Primigenia te ha encontrado..."
+
+[node name="EcoDeCosta" type="Area3D" parent="." unique_id=310000001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.9, -4.5)
+script = ExtResource("5_discovery")
+
+[node name="Mesh" type="MeshInstance3D" parent="EcoDeCosta" unique_id=1954535431]
+mesh = SubResource("SphereMesh_discovery")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EcoDeCosta" unique_id=388068202]
+shape = SubResource("SphereShape3D_discovery")
+
+[node name="GotaDeLuz" type="Area3D" parent="." unique_id=310000002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -5)
+script = ExtResource("5_discovery")
+
+[node name="Mesh" type="MeshInstance3D" parent="GotaDeLuz" unique_id=2053890904]
+mesh = SubResource("SphereMesh_discovery")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GotaDeLuz" unique_id=1848404621]
+shape = SubResource("SphereShape3D_discovery")
+
+[node name="BurbujaDeEnergia" type="Area3D" parent="." unique_id=310000003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.9, -3.5)
+script = ExtResource("5_discovery")
+
+[node name="Mesh" type="MeshInstance3D" parent="BurbujaDeEnergia" unique_id=1011459697]
+mesh = SubResource("SphereMesh_discovery")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BurbujaDeEnergia" unique_id=1959018117]
+shape = SubResource("SphereShape3D_discovery")
+
+[node name="CostaDeChispaFX" type="Node3D" parent="." unique_id=105949882]
+script = ExtResource("7_fx")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1451650577]
+script = ExtResource("6_hud")
+
+[node name="Panel" type="Panel" parent="HUD" unique_id=2131142500]
+custom_minimum_size = Vector2(560, 365)
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 580.0
+offset_bottom = 400.0
+
+[node name="ProgresoLabel" type="Label" parent="HUD/Panel" unique_id=573308147]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 540.0
+offset_bottom = 155.0
+theme_override_font_sizes/font_size = 18
+text = "PLONPY
+
+Núcleos: 0
+Nivel: 1
+XP: 0
+CHISPA: 0"
+
+[node name="MisionLabel" type="Label" parent="HUD/Panel" unique_id=30441231]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 160.0
+offset_right = 540.0
+offset_bottom = 315.0
+theme_override_font_sizes/font_size = 16
+text = "MISIÓN M001 — Despertar
+Muévete por la Costa de Chispa.
+Progreso: 0/1"
+autowrap_mode = 2
+
+[node name="ControlesLabel" type="Label" parent="HUD/Panel" unique_id=1915991673]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 325.0
+offset_right = 540.0
+offset_bottom = 390.0
+theme_override_font_sizes/font_size = 12
+text = "WASD: mover   G: guardar   L: cargar   N: nueva partida"
+
+[node name="MensajeLabel" type="Label" parent="HUD" unique_id=1796559893]
+visible = false
+offset_left = 260.0
+offset_top = 545.0
+offset_right = 892.0
+offset_bottom = 620.0
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SalidaBosque" type="Area3D" parent="." unique_id=1730966579]
+transform = Transform3D(0.9935719, -0.11320321, 0, 0.11314098, 0.9930256, -0.03315518, 0.003753273, 0.032942057, 0.9994502, -12, 1, 0)
+script = ExtResource("7_be5db")
+destination_scene = "uid://bti1wxldebt3n"
+destination_region = "bosque_de_vetas"
+destination_spawn_position = Vector3(0, 1.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SalidaBosque" unique_id=1257009401]
+shape = SubResource("BoxShape3D_b6d8j")
+
+[connection signal="body_entered" from="ChispaPrimigenia/Area3D" to="Jugador" method="_on_area_3d_body_entered"]

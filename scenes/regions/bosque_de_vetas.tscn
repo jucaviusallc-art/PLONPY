@@ -1,0 +1,364 @@
+[gd_scene format=3 uid="uid://bti1wxldebt3n"]
+
+[ext_resource type="Script" uid="uid://cvi2k1p8yhf6" path="res://scripts/world/bosque_de_vetas.gd" id="1_bosque"]
+[ext_resource type="Script" uid="uid://x5oe5iwvplbt" path="res://scenes/jugador.gd" id="2_jugador"]
+[ext_resource type="Script" uid="uid://le03kvgrmisg" path="res://scripts/exploration/nucleo_coleccionable.gd" id="3_nucleo"]
+[ext_resource type="Script" uid="uid://wyc05w17qhut" path="res://scripts/exploration/discovery.gd" id="4_discovery"]
+[ext_resource type="Script" uid="uid://boh1g7bxvbbaw" path="res://scripts/exploration/bosque_sign.gd" id="5_sign"]
+[ext_resource type="Script" uid="uid://c0fkro0lhdr4j" path="res://scripts/ui/hud.gd" id="6_hud"]
+
+[sub_resource type="StandardMaterial3D" id="SueloMat_bosque"]
+albedo_color = Color(0.08, 0.19, 0.12, 1)
+roughness = 0.92
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_bosque"]
+sky_top_color = Color(0.025, 0.07, 0.08, 1)
+sky_horizon_color = Color(0.08, 0.26, 0.22, 1)
+sky_curve = 0.45
+ground_bottom_color = Color(0.01, 0.035, 0.025, 1)
+ground_horizon_color = Color(0.04, 0.15, 0.11, 1)
+
+[sub_resource type="Sky" id="Sky_bosque"]
+sky_material = SubResource("SkyMat_bosque")
+
+[sub_resource type="Environment" id="Env_bosque"]
+background_mode = 2
+sky = SubResource("Sky_bosque")
+ambient_light_source = 3
+ambient_light_color = Color(0.18, 0.42, 0.34, 1)
+ambient_light_energy = 0.75
+
+[sub_resource type="StandardMaterial3D" id="AguaMat_bosque"]
+transparency = 1
+albedo_color = Color(0.04, 0.45, 0.38, 0.58)
+emission_enabled = true
+emission = Color(0.02, 0.22, 0.18, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="StandardMaterial3D" id="TroncoMat_bosque"]
+albedo_color = Color(0.16, 0.1, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="HojaMat_bosque"]
+albedo_color = Color(0.05, 0.42, 0.24, 1)
+emission_enabled = true
+emission = Color(0.02, 0.24, 0.12, 1)
+emission_energy_multiplier = 1.6
+
+[sub_resource type="StandardMaterial3D" id="CristalMat_bosque"]
+albedo_color = Color(0.32, 0.9, 0.72, 1)
+emission_enabled = true
+emission = Color(0.08, 1, 0.65, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CommonNucleusMesh"]
+material = SubResource("CristalMat_bosque")
+top_radius = 0.1
+bottom_radius = 0.3
+height = 0.85
+radial_segments = 8
+rings = 3
+
+[sub_resource type="CapsuleMesh" id="PlayerMesh_bosque"]
+material = SubResource("CristalMat_bosque")
+
+[sub_resource type="CapsuleShape3D" id="PlayerShape_bosque"]
+radius = 0.45
+height = 1.6
+
+[sub_resource type="SphereMesh" id="EyeMesh_bosque"]
+material = SubResource("CristalMat_bosque")
+radius = 0.18
+height = 0.36
+
+[sub_resource type="SphereShape3D" id="CollectShape_bosque"]
+radius = 0.82
+
+[sub_resource type="StandardMaterial3D" id="RareMat_bosque"]
+albedo_color = Color(0.62, 0.38, 1, 1)
+emission_enabled = true
+emission = Color(0.48, 0.18, 1, 1)
+emission_energy_multiplier = 4.5
+
+[sub_resource type="CylinderMesh" id="RareNucleusMesh"]
+material = SubResource("RareMat_bosque")
+top_radius = 0.06
+bottom_radius = 0.24
+height = 1.05
+radial_segments = 6
+
+[sub_resource type="SphereMesh" id="DiscoveryMesh_bosque"]
+material = SubResource("CristalMat_bosque")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b6d8j"]
+size = Vector3(24, 1, 24)
+
+[node name="BosqueDeVetas" type="Node3D" unique_id=2082478010]
+script = ExtResource("1_bosque")
+
+[node name="SueloBosque" type="CSGBox3D" parent="." unique_id=81707901]
+use_collision = true
+size = Vector3(16, 0.5, 14)
+material = SubResource("SueloMat_bosque")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1172110482]
+environment = SubResource("Env_bosque")
+
+[node name="LuzLuna" type="DirectionalLight3D" parent="." unique_id=1018942478]
+transform = Transform3D(0.90630776, 0.33302772, -0.2601898, 0, 0.6156615, 0.7880107, 0.42261827, -0.71418023, 0.5579788, 0, 0, 0)
+light_color = Color(0.48, 0.78, 0.7, 1)
+light_energy = 0.75
+shadow_enabled = true
+
+[node name="LuzBosque" type="OmniLight3D" parent="." unique_id=1002011037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+light_color = Color(0.12, 0.95, 0.65, 1)
+light_energy = 1.5
+omni_range = 10.0
+
+[node name="AguaVetas" type="CSGBox3D" parent="." unique_id=787207898]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.34, -2.5)
+size = Vector3(5.5, 0.14, 2.4)
+material = SubResource("AguaMat_bosque")
+
+[node name="Arboles" type="Node3D" parent="." unique_id=1238970677]
+
+[node name="Arbol1" type="CSGCylinder3D" parent="Arboles" unique_id=1286868492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.3, -5)
+radius = 0.55
+height = 2.6
+material = SubResource("TroncoMat_bosque")
+
+[node name="Copa1" type="CSGCylinder3D" parent="Arboles" unique_id=1500763569]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -5)
+radius = 1.45
+height = 1.8
+cone = true
+material = SubResource("HojaMat_bosque")
+
+[node name="Arbol2" type="CSGCylinder3D" parent="Arboles" unique_id=569557693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 1.2, -4.8)
+height = 2.4
+material = SubResource("TroncoMat_bosque")
+
+[node name="Copa2" type="CSGCylinder3D" parent="Arboles" unique_id=851679957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 2.9, -4.8)
+radius = 1.35
+height = 1.7
+cone = true
+material = SubResource("HojaMat_bosque")
+
+[node name="Arbol3" type="CSGCylinder3D" parent="Arboles" unique_id=1546031683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.15, 5)
+radius = 0.45
+height = 2.3
+material = SubResource("TroncoMat_bosque")
+
+[node name="Copa3" type="CSGCylinder3D" parent="Arboles" unique_id=216676170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.8, 5)
+radius = 1.25
+height = 1.6
+cone = true
+material = SubResource("HojaMat_bosque")
+
+[node name="Arbol4" type="CSGCylinder3D" parent="Arboles" unique_id=172459227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 1.25, 5)
+radius = 0.52
+height = 2.5
+material = SubResource("TroncoMat_bosque")
+
+[node name="Copa4" type="CSGCylinder3D" parent="Arboles" unique_id=1026940083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 2.95, 5)
+radius = 1.4
+height = 1.8
+cone = true
+material = SubResource("HojaMat_bosque")
+
+[node name="CristalesDecorativos" type="Node3D" parent="." unique_id=431579420]
+
+[node name="Cristal1" type="MeshInstance3D" parent="CristalesDecorativos" unique_id=1743207807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.7, -1)
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="Cristal2" type="MeshInstance3D" parent="CristalesDecorativos" unique_id=850812262]
+transform = Transform3D(0.87542605, -0.23456971, 0.42261827, 0.25881904, 0.9659258, 0, -0.4082179, 0.10938165, 0.90630776, 3.5, 0.7, -2)
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="Cristal3" type="MeshInstance3D" parent="CristalesDecorativos" unique_id=1614592175]
+transform = Transform3D(0.80670726, 0.14224426, -0.57357645, -0.17364818, 0.9848077, 0, 0.56486255, 0.09960051, 0.81915206, 1, 0.7, 5)
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="Jugador" type="CharacterBody3D" parent="." unique_id=725453459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+script = ExtResource("2_jugador")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jugador" unique_id=1527947488]
+mesh = SubResource("PlayerMesh_bosque")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jugador" unique_id=266145864]
+shape = SubResource("PlayerShape_bosque")
+
+[node name="Camera3D" type="Camera3D" parent="Jugador" unique_id=331574615]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6)
+current = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Jugador" unique_id=168402056]
+transform = Transform3D(0.255, 0, 0, 0, 0.255, 0, 0, 0, 0.255, 0.3, 0.8, 0.45)
+mesh = SubResource("EyeMesh_bosque")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Jugador" unique_id=1835613655]
+transform = Transform3D(0.255, 0, 0, 0, 0.255, 0, 0, 0, 0.255, -0.3, 0.8, 0.45)
+mesh = SubResource("EyeMesh_bosque")
+
+[node name="NucleoVetaLuminosa" type="Area3D" parent="." unique_id=861068328]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 0.9, 1)
+script = ExtResource("3_nucleo")
+
+[node name="Mesh" type="MeshInstance3D" parent="NucleoVetaLuminosa" unique_id=92948458]
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoVetaLuminosa" unique_id=1805091382]
+shape = SubResource("CollectShape_bosque")
+
+[node name="NucleoSemillaCristal" type="Area3D" parent="." unique_id=2028475098]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.9, -5)
+script = ExtResource("3_nucleo")
+
+[node name="Mesh" type="MeshInstance3D" parent="NucleoSemillaCristal" unique_id=423290847]
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoSemillaCristal" unique_id=1481381853]
+shape = SubResource("CollectShape_bosque")
+
+[node name="NucleoEcoIlin" type="Area3D" parent="." unique_id=396581761]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.9, 1.8)
+script = ExtResource("3_nucleo")
+
+[node name="Mesh" type="MeshInstance3D" parent="NucleoEcoIlin" unique_id=2016367327]
+mesh = SubResource("CommonNucleusMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoEcoIlin" unique_id=1428087024]
+shape = SubResource("CollectShape_bosque")
+
+[node name="NucleoOjoCristal" type="Area3D" parent="." unique_id=1561782979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.05, -4.2)
+script = ExtResource("3_nucleo")
+
+[node name="Mesh" type="MeshInstance3D" parent="NucleoOjoCristal" unique_id=209419322]
+mesh = SubResource("RareNucleusMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoOjoCristal" unique_id=1909552769]
+shape = SubResource("CollectShape_bosque")
+
+[node name="NucleoSusurroVyra" type="Area3D" parent="." unique_id=1531427400]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 1.05, 4)
+script = ExtResource("3_nucleo")
+
+[node name="Mesh" type="MeshInstance3D" parent="NucleoSusurroVyra" unique_id=1135947683]
+mesh = SubResource("RareNucleusMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NucleoSusurroVyra" unique_id=394081087]
+shape = SubResource("CollectShape_bosque")
+
+[node name="SemillaVoladora" type="Area3D" parent="." unique_id=1211492365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 1.4, -3)
+script = ExtResource("4_discovery")
+discovery_id = "semilla_voladora"
+title = "Semilla Voladora"
+message = "Una semilla que vuela. Nunca toca el suelo."
+
+[node name="Mesh" type="MeshInstance3D" parent="SemillaVoladora" unique_id=515207700]
+mesh = SubResource("DiscoveryMesh_bosque")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SemillaVoladora" unique_id=1866385582]
+shape = SubResource("CollectShape_bosque")
+
+[node name="CorazonDeVetas" type="Area3D" parent="." unique_id=361654832]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1.2, -0.5)
+script = ExtResource("5_sign")
+discovery_id = "corazon_de_vetas"
+title = "Corazón de Vetas"
+message = "El corazón del bosque late bajo tus pies."
+
+[node name="Mesh" type="MeshInstance3D" parent="CorazonDeVetas" unique_id=860359110]
+mesh = SubResource("DiscoveryMesh_bosque")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CorazonDeVetas" unique_id=2138922491]
+shape = SubResource("CollectShape_bosque")
+
+[node name="HongoDeLuz" type="Area3D" parent="." unique_id=735834516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.9, 3.8)
+script = ExtResource("5_sign")
+discovery_id = "hongo_de_luz"
+title = "Hongo de Luz"
+message = "Un hongo bioluminiscente pulsa al ritmo de VYRA."
+
+[node name="Mesh" type="MeshInstance3D" parent="HongoDeLuz" unique_id=1207878598]
+mesh = SubResource("DiscoveryMesh_bosque")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HongoDeLuz" unique_id=1142389055]
+shape = SubResource("CollectShape_bosque")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1404398855]
+script = ExtResource("6_hud")
+
+[node name="Panel" type="Panel" parent="HUD" unique_id=478032946]
+modulate = Color(1, 1, 1, 0.92)
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 580.0
+offset_bottom = 390.0
+
+[node name="ProgresoLabel" type="Label" parent="HUD/Panel" unique_id=1664503585]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 540.0
+offset_bottom = 145.0
+theme_override_font_sizes/font_size = 18
+text = "PLONPY
+
+Bosque de Vetas
+Núcleos: 2
+Nivel: 4
+XP: 300
+CHISPA: 150"
+
+[node name="MisionLabel" type="Label" parent="HUD/Panel" unique_id=1836225682]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 155.0
+offset_right = 540.0
+offset_bottom = 315.0
+theme_override_font_sizes/font_size = 16
+text = "BOSQUE DE VETAS
+Vegetación bioluminiscente y primeros Núcleos Raros.
+
+Explora, encuentra Núcleos y descubre las señales del bosque."
+autowrap_mode = 2
+
+[node name="ControlesLabel" type="Label" parent="HUD/Panel" unique_id=1728521555]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 320.0
+offset_right = 540.0
+offset_bottom = 360.0
+theme_override_font_sizes/font_size = 12
+text = "WASD: mover   G: guardar   L: cargar   N: nueva partida"
+
+[node name="MensajeLabel" type="Label" parent="HUD" unique_id=686207051]
+visible = false
+offset_left = 250.0
+offset_top = 530.0
+offset_right = 900.0
+offset_bottom = 620.0
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SueloBosque2" type="StaticBody3D" parent="." unique_id=1609087196]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SueloBosque2" unique_id=501982217]
+shape = SubResource("BoxShape3D_b6d8j")
